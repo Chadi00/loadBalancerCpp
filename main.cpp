@@ -11,11 +11,12 @@
 #include <netinet/in.h>
 #include <netdb.h>
 #include <arpa/inet.h>
+#include <algorithm>
 
 using namespace std;
 
 // Mock backend servers
-const vector<string> servers = {"127.0.0.1:8081", "127.0.0.1:8082", "127.0.0.1:8083"};
+const vector<string> servers = { "host.docker.internal:8081", "host.docker.internal:8082", "host.docker.internal:8083" };
 vector<int> active_connections(servers.size(), 0);
 mutex connections_mutex;
 
