@@ -20,10 +20,16 @@
 
 using namespace std;
 
-// Mock backend servers
-const vector<string> servers = { "host.docker.internal:8081", "host.docker.internal:8082", "host.docker.internal:8083" };
-vector<int> active_connections(servers.size(), 0);
-mutex connections_mutex;
+// Mock backend servers on host machine
+const vector<string> servers = {"host.docker.internal:8081", "host.docker.internal:8082", "host.docker.internal:8083"};
+atomic<int> rr_index(0); // Round-robin index
+mutex rr_mutex; // Mutex for round-robin index
+
+// Task queue and synchronization primitives for thread pool
+queue<function<void()>> tasks;
+mutex queue_mutex;
+condition_variable condition;
+atomic<bool> server_running(true);
 
 void make_socket_non_blocking(int sockfd) {
     int flags = fcntl(sockfd, F_GETFL, 0);
