@@ -15,7 +15,7 @@
 
 using namespace std;
 
-// Mock backend servers
+// Mock backend servers running on the host machine while loadbalancer on docker coontainer
 const vector<string> servers = { "host.docker.internal:8081", "host.docker.internal:8082", "host.docker.internal:8083" };
 vector<int> active_connections(servers.size(), 0);
 mutex connections_mutex;
